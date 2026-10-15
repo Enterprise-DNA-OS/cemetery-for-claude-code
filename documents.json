@@ -1,11 +1,33 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
+    "name": "right-certificate",
+    "title": "Certificate of exclusive right of burial",
+    "for_each": "select r.id, h.name || ' ' || rl.plot as label from rights r join holders h on h.id = r.holder_id join right_lapses rl on rl.right_id = r.id order by rl.plot",
+    "file": "label",
+    "sections": [
+      { "title": "The right", "note": "Sold under section 10(1) of the Burial and Cremation Act 1964. No burial may take place in this plot without the holder's consent (s 10(2)).", "sql": "select rl.plot, rl.holder, coalesce(r.certificate_no, '') as certificate, r.purchased_on, coalesce(r.term_years::text, 'In perpetuity') as term from rights r join right_lapses rl on rl.right_id = r.id where r.id = $1" },
+      { "title": "Interments in this plot", "sql": "select coalesce(i.register_no::text, '') as register_no, d.name, d.date_of_death, i.completed_on from rights r join interments i on i.plot_id = r.plot_id join deceased d on d.id = i.deceased_id where r.id = $1 and i.status = 'completed' order by i.completed_on" },
+      { "title": "When the right ends", "note": "Under section 10(4) the right lapses if 60 years pass without a burial in the plot.", "sql": "select rl.last_burial_on, rl.lapses_on, rl.term_ends_on from right_lapses rl where rl.right_id = $1" }
+    ]
+  },
+  {
+    "name": "burial-register",
+    "title": "Register of burials",
+    "for_each": "select id, name from cemeteries order by name",
     "file": "name",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      { "title": "Burials", "note": "Kept under section 50 of the Burial and Cremation Act 1964: where each body is buried and a description of every grave, indexed by name. Open for inspection.", "sql": "select coalesce(r.register_no::text, '') as no, r.deceased, r.date_of_birth, r.date_of_death, r.age_years as age, r.section, r.row_label as row, r.number as plot, r.kind, r.completed_on, case when r.status = 'removed' then 'Removed under licence' else '' end as note from register r join cemeteries c on c.name = r.cemetery where c.id = $1 order by r.deceased, r.completed_on" }
+    ]
+  },
+  {
+    "name": "director-statement",
+    "title": "Account statement",
+    "for_each": "select id, name from funeral_directors order by name",
+    "file": "name",
+    "sections": [
+      { "title": "Charges", "sql": "select raised_on, due_on, description, amount_cents, (select value from settings where key = 'currency') as currency from charges where funeral_director_id = $1 order by raised_on, created_at" },
+      { "title": "Payments received", "sql": "select received_on, coalesce(reference, '') as reference, amount_cents, (select value from settings where key = 'currency') as currency from payments where funeral_director_id = $1 order by received_on" },
+      { "title": "Balance", "note": "Charges due to today less payments received.", "sql": "select charged_cents, due_cents, paid_cents, overdue_cents, (select value from settings where key = 'currency') as currency from accounts where account_id = $1" }
     ]
   }
 ]

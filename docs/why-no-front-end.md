@@ -1,24 +1,25 @@
 # Why there is no front end
 
-PlotBox is a database with a subscription. The tables underneath it are ordinary: a few entities, a few relationships, a handful of workflows you repeat every week. What you pay for is the layer on top that lets people who do not write SQL get at those tables. Screens, filters, dashboards, forms.
+PlotBox is a database with a subscription. Underneath sit ordinary records: cemeteries, sections, plots, rights of burial, the people interred, bookings from funeral directors, memorials. What the subscription pays for is the layer on top that lets office staff without database skills reach those records: screens, a calendar, a map, portals, forms.
 
-That layer used to be the whole product, because talking to a database was hard. It is not hard any more. Open this folder in Claude Code, describe what you want, and it writes the query, runs it, and explains the answer. Ask a question the dashboard never had a chart for and you still get an answer.
+That layer used to be the whole product, because talking to a database was hard. It is not hard any more. Open this folder in Claude Code, ask "which family plots lapse in the next year?" or "is the paperwork in for Thursday's burial?", and it runs the right command and explains the answer.
 
 ## What you gain
 
-- **Better answers.** A dashboard shows what the vendor decided to chart. Here you ask your own question, in your own words, and get it answered against your own data.
-- **No seats.** Everyone who needs to look can look. The bill does not grow with headcount.
-- **Your data in your Postgres.** Plain tables. Back them up, query them from anything, leave any time. There is no export step because there is nothing to leave.
-- **A process that matches you.** When your way of working changes, you add a command. You do not wait for a feature request to clear.
+- **Answers the dashboard never had.** Which rights of burial lapse under section 10(4) while the plot still has room. Which burial is booked in a held plot with no consent from the holder. How many years each section has left at last year's rate.
+- **No per-user bill.** PlotBox prices each named user by tier. Here everyone in the office, the grounds team and management can look.
+- **Your register in your own database.** The burial register is a public record you must keep and index. Here it is plain rows you can back up, print and query from anything.
+- **Rules you can read.** Every check is listed in `docs/compliance.md` with the section beside it.
 
-## What you give up
+## What a screen gives that this does not
 
-- **A visual board.** Stages are a table you ask about, not cards you drag.
-- **A phone app.** It runs where Claude Code runs.
-- **A vendor help desk.** This is open source. Enterprise DNA supports the installed version for businesses that want someone to call.
+- **A digital map.** PlotBox draws plots on aerial images. Here a plot is its section, row and number, and the map stays on the wall or in your GIS. Enterprise DNA can add a map view on top of the same records for your version.
+- **Portals.** Funeral directors book online and families search the register on the web with PlotBox's portals. Here the office takes bookings by phone or email and runs the search for the enquirer.
+- **A tablet app for the grounds team.** Here a groundsperson tells the office, or logs a job where Claude Code runs.
+- **A help desk at the vendor.** This is open source. Enterprise DNA supports the installed version for cemeteries that want someone to call.
 
 ## Who this fits
 
-Small teams who already use Claude Code, or who would rather learn to ask than learn another interface. If your team needs a screen to look at all day, keep PlotBox. If you need the answers more than the screens, this is cheaper, faster and yours.
+A council, a cemetery trust or a private cemetery or crematorium with a small office who would rather ask than click. If funeral directors must book online, Enterprise DNA builds that portal on the same records for your version.
 
 Installed and run for you: https://enterprisedna.co/omni/instead-of/plotbox

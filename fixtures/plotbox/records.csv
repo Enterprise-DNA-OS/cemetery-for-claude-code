@@ -1,0 +1,5 @@
+Record ID,Cemetery,Section,Row,Plot,Plot Type,Capacity,Deceased First Name,Deceased Last Name,Date of Birth,Date of Death,Age,Interment Date,Interment Type,Register Number,Rights Holder,Rights Holder Email,Right Purchased,Certificate Number
+PB-1001,Hillside Cemetery,Lawn B,B,1,Burial,2,Example,Person One,12/03/1940,02/05/2019,79,08/05/2019,Burial,2001,Example Holder One,holder1@example.com,01/05/2019,HC-2001
+PB-1002,Hillside Cemetery,Lawn B,B,1,Burial,2,Example,Person Two,20/07/1943,11/01/2025,81,17/01/2025,Burial,2002,Example Holder One,holder1@example.com,01/05/2019,HC-2001
+PB-1003,Hillside Cemetery,Ashes Wall,W,7,Niche,2,Example,Person Three,,03/02/2024,,10/02/2024,Cremated Remains,,,,,
+PB-1004,Hillside Cemetery,Lawn B,B,2,Burial,2,,,,,,,,,Example Holder Two,,15/06/2022,HC-2210

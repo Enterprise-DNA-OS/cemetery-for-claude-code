@@ -2,13 +2,33 @@
   {
     "name": "week",
     "title": "This week",
-    "subtitle": "Cemetery for Claude Code: what needs attention, rendered by npm run view",
+    "subtitle": "What needs attention across the cemeteries, rendered by npm run view",
     "sections": [
-      {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
-      }
+      { "title": "Rule checks", "note": "Each line cites its rule in docs/compliance.md.", "sql": "select rule, subject, issue from compliance_issues order by rule, subject" },
+      { "title": "Interments booked", "sql": "select to_char(scheduled_at, 'YYYY-MM-DD HH24:MI') as at, deceased, kind, plot, funeral_director, case when paperwork_on is null then 'missing' else 'on file' end as paperwork from schedule order by scheduled_at" },
+      { "title": "Rights lapsing or ended", "sql": "select plot, holder, lapses_on, term_ends_on from right_lapses where space_left > 0 and least(lapses_on, coalesce(term_ends_on, lapses_on)) <= current_date + setting_int('right_lapse_notice_days') order by 3" },
+      { "title": "Accounts overdue", "sql": "select kind, name, overdue_cents, days_overdue, (select value from settings where key = 'currency') as currency from arrears order by days_overdue desc" },
+      { "title": "Grounds jobs open", "sql": "select s.name as section, g.category, g.reported_on, g.summary from grounds_jobs g join sections s on s.id = g.section_id where g.resolved_on is null order by g.reported_on" }
+    ]
+  },
+  {
+    "name": "capacity",
+    "title": "Capacity",
+    "subtitle": "Plots available, reserved and in use by section, and how long they last at last year's rate",
+    "sections": [
+      { "title": "By section", "sql": "select cemetery, section, section_kind as kind, plots, available, reserved, in_use, unusable, burials_last_year, case when burials_last_year = 0 then null else round(available::numeric / burials_last_year, 1) end as years_left from capacity order by cemetery, section" },
+      { "title": "Plots available to sell", "sql": "select label as plot, plot_type as type, capacity from plot_status ps join cemeteries c on c.id = ps.cemetery_id where ps.status = 'available' and c.closed_on is null order by label" },
+      { "title": "Plots out of use", "sql": "select label as plot, unusable_reason as reason from plot_status where status = 'unusable' order by label" }
+    ]
+  },
+  {
+    "name": "memorials",
+    "title": "Memorials",
+    "subtitle": "Permits waiting, memorials installed without a permit, and safety inspections",
+    "sections": [
+      { "title": "Permits waiting", "sql": "select ps.label as plot, m.applicant, m.description, m.applied_on, current_date - m.applied_on as days_waiting from memorials m join plot_status ps on ps.plot_id = m.plot_id where m.decision is null and m.applied_on is not null order by m.applied_on" },
+      { "title": "Unsafe or leaning", "sql": "select ps.label as plot, m.description, m.condition, m.inspected_on from memorials m join plot_status ps on ps.plot_id = m.plot_id where m.condition in ('unsafe', 'leaning') order by m.condition desc, m.inspected_on" },
+      { "title": "Not inspected in two years", "sql": "select ps.label as plot, m.description, coalesce(m.inspected_on::text, 'never') as last_inspected from memorials m join plot_status ps on ps.plot_id = m.plot_id where m.installed_on is not null and (m.inspected_on is null or m.inspected_on < current_date - 730) order by ps.label" }
     ]
   }
 ]

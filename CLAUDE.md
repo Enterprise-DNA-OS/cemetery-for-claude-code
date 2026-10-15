@@ -22,9 +22,28 @@ Fill this in once. A worker with context knows. A worker without it guesses.
 
 | When the operator asks for... | Use this |
 |---|---|
-| <!-- TODO(author): one row per slash command --> | `/...` |
+| What needs attention, what is overdue | `/attention` |
+| The Monday review | `/weekly-review` |
+| What is booked, who is being buried this week | `/schedule` |
+| A funeral director rings to book | `/available` or `/plot`, then `/book`, then `/draft-confirmation` |
+| Paperwork arrived, the family consented | `/paperwork`, `/consent` |
+| The burial happened | `/complete` |
+| A family history or grave-finding enquiry | `/search`, `/plot` |
+| Selling, transferring or giving back a plot | `/sell-right`, `/transfer-right`, `/surrender-right` |
+| Rights about to lapse | `/lapsing`, `/draft-lapse-notice`, `/end-right` |
+| Moving a body or ashes | `/disinter` (needs the Minister's licence) |
+| A headstone or plaque | `/apply-memorial`, `/decide-memorial`, `/install-memorial` |
+| A memorial is leaning or unsafe | `/inspect-memorial`, `/make-safe` |
+| A sunken grave, a tree down, drainage | `/report-grounds`, `/resolve-grounds` |
+| Who owes us, a payment came in | `/arrears`, `/pay`, `/charge` |
+| How long until a section is full | `/capacity` |
+| Are we meeting the Act | `/compliance` |
+| New sections or plots | `/add-section`, `/add-plots`, `/set-plot` |
+| Bring PlotBox data across | `/import` |
+| Change a field, rule or stage | `/customise` |
+| A new page to look at | `/new-view` |
 
-If an ask fits nothing here, run the CLI directly (`npm run <cli> -- --help`) and then propose a new command for it.
+If an ask fits nothing here, run the CLI directly (`npm run cem -- help`) and then propose a new command for it.
 
 ## Hard rules
 
@@ -32,6 +51,9 @@ If an ask fits nothing here, run the CLI directly (`npm run <cli> -- --help`) an
 - Never delete records without an explicit yes in this session. Prefer marking closed or archived.
 - Never invent a record. If a name is ambiguous, list the candidates and ask.
 - The database is the source of truth. If the answer is not in it, say so.
+- The burial register is a permanent public record. Never delete or renumber an entry. A removal marks it removed and keeps it.
+- Never record consent, paperwork or a licence the office does not hold. Ask for the date it arrived.
+- Families are grieving. Drafts to holders and families are plain and kind, and never mention money in the same letter as a death unless the operator asks.
 
 ## Where things live
 
